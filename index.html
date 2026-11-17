@@ -226,7 +226,13 @@ section{padding:70px 0}
 .cg{position:absolute;left:0;top:0;width:440px;height:440px;margin:-220px 0 0 -220px;border-radius:50%;background:radial-gradient(circle,rgba(255,183,3,.38),transparent 65%);pointer-events:none;opacity:0;transition:opacity .4s}
 .hero:hover .cg{opacity:1}
 .ov{perspective:900px}
-.ov svg.oven{transition:transform .25s ease-out;transform:rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg))}
+.ov svg.oven,.ov .hp{transition:transform .25s ease-out;transform:rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg))}
+.ov:has(.hp) svg.oven{display:none}
+.hp{margin:0;position:relative;aspect-ratio:4/5;border-radius:32px;overflow:hidden;border:6px solid #fff;box-shadow:0 30px 60px rgba(20,22,26,.25);background:linear-gradient(135deg,#fff,var(--st))}
+.hp img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 1.2s}
+.ov:hover .hp img{transform:scale(1.06)}
+.hp:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 62%,rgba(20,22,26,.4));pointer-events:none}
+.hp figcaption{position:absolute;z-index:2;bottom:16px;inset-inline-start:16px;background:rgba(255,255,255,.95);border-radius:999px;padding:0 16px;font-weight:800;font-size:.9rem;line-height:2.4;color:var(--ink)}
 .flm{transform-box:fill-box;transform-origin:50% 100%;animation:fk .45s ease-in-out infinite alternate}
 @keyframes fk{from{transform:scale(1,.7) skewX(-5deg)}to{transform:scale(1.12,1.25) skewX(5deg)}}
 section h2:after{content:"";display:block;width:0;height:5px;border-radius:5px;background:var(--gr);margin-top:10px;transition:width .9s .3s}
@@ -259,6 +265,7 @@ nav>a.a{color:var(--e2);background:#fff}
 <div class="hn"><span>عرض 99 ريال</span><span>مكة وجدة</span><span>أنواع أفران متعددة</span></div>
 </div>
 <div class="ov">
+<figure class="hp"><img src="2.jpg" alt="صورة توضيحية لصيانة فرن" width="1200" height="1500" fetchpriority="high" onerror="this.closest('figure').remove()"><figcaption>مكة المكرمة · جدة</figcaption></figure>
 <svg class="oven" viewBox="0 0 420 470" role="img" aria-label="فرن بسخانات متوهجة يرتفع منه البخار">
 <defs><linearGradient id="em" x1="0" x2="1"><stop offset="0" stop-color="#FFB703"/><stop offset=".55" stop-color="#E85D04"/><stop offset="1" stop-color="#D90429"/></linearGradient><linearGradient id="bd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3F6F9"/><stop offset="1" stop-color="#CBD3DC"/></linearGradient><radialGradient id="gw" cx=".5" cy=".6" r=".6"><stop offset="0" stop-color="#FF7A00" stop-opacity=".55"/><stop offset="1" stop-color="#FF7A00" stop-opacity="0"/></radialGradient></defs>
 <path class="sm" d="M150 62c-16-14 16-26 0-44"/><path class="sm" d="M210 62c-16-14 16-26 0-44"/><path class="sm" d="M270 62c-16-14 16-26 0-44"/>
@@ -364,7 +371,7 @@ nav>a.a{color:var(--e2);background:#fff}
 <script>
 /* ===== الإعدادات: عدّل هنا فقط ===== */
 const CONFIG={name:'البيان لصيانة الأفران',phone:'0544918132',offer:99,cities:['مكة المكرمة','جدة'],
- waMsg:'السلام عليكم، أرغب في الاستفادة من عرض صيانة الأفران 99 ريال.',
+ waMsg:'السلام عليكم',
  problems:[
   ['الفرن لا يعمل أو لا يشتعل','نفحص سبب عدم التشغيل ونوضح لك الحل المناسب.'],
   ['الفرن لا يسخن كما يجب','نتحقق من ضعف التسخين ونحدد ما يحتاجه الفرن.'],
@@ -379,7 +386,7 @@ const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const loc=CONFIG.phone.replace(/\D/g,''),intl='966'+loc.replace(/^0/,'');
 const wa=t=>'https://wa.me/'+intl+'?text='+encodeURIComponent(t);
 $$('.tel').forEach(a=>a.href='tel:'+loc);
-$$('.wal').forEach(a=>{a.href=wa(a.dataset.c?'السلام عليكم، أرغب في عرض صيانة الأفران 99 ريال في '+a.dataset.c+'.':CONFIG.waMsg)});
+$$('.wal').forEach(a=>{a.href=wa(a.dataset.c?'السلام عليكم، أرغب في صيانة فرن في '+a.dataset.c+'.':CONFIG.waMsg)});
 const pt=['عرض صيانة الأفران 99 ريال فقط','مكة المكرمة وجدة','اتصل الآن'];
 $('#pr').innerHTML=[0,1,2,3,4,5].map(()=>pt.map(t=>'<span>'+t+'</span>').join('')).join('');
 /* embers */
@@ -399,7 +406,7 @@ function pick(i){const n=P.length;let d=((i-cur)%n+n)%n;spin+=d*(360/n);cur=i;kb
 kb.onclick=()=>pick((cur+1)%P.length);kb.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();kb.click()}};
 pick(0);
 $('#go').onclick=()=>{const c=$('input[name=c]:checked').value,t=$('input[name=t]:checked').value;
- open(wa('السلام عليكم، أرغب في عرض صيانة الأفران 99 ريال في '+c+'. نوع الفرن: '+t+'. المشكلة: '+P[cur][0]+'. سأرسل صورة أو فيديو للمشكلة هنا.'),'_blank','noopener')};
+ open(wa('السلام عليكم، أرغب في صيانة فرن في '+c+'. نوع الفرن: '+t+'. المشكلة: '+P[cur][0]+'. سأرسل صورة أو فيديو للمشكلة هنا.'),'_blank','noopener')};
 /* menu */
 const menu=o=>{$('#nv').classList.toggle('o',o);$('#mt').setAttribute('aria-expanded',o);document.documentElement.classList.toggle('no-s',o);document.documentElement.classList.toggle('mo',o)};
 $$('#nv>a').forEach((a,i)=>a.style.setProperty('--i',i));
@@ -427,7 +434,7 @@ const spf=()=>{pgb.style.transform='scaleX('+Math.min(1,scrollY/Math.max(1,docum
 const lks=$$('#nv>a[href^="#"]');
 const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)lks.forEach(a=>a.classList.toggle('a',$(a.getAttribute('href'))===e.target))}),{rootMargin:'-40% 0px -55% 0px'});
 lks.forEach(a=>{const t=$(a.getAttribute('href'));t&&so.observe(t)});
-if(fine&&!RM){const h=$('#hero'),g=document.createElement('i'),ov=$('.oven');g.className='cg';h.prepend(g);
+if(fine&&!RM){const h=$('#hero'),g=document.createElement('i'),ov=$('.ov');g.className='cg';h.prepend(g);
  h.addEventListener('mousemove',e=>{const r=h.getBoundingClientRect(),o=$('.ov').getBoundingClientRect();g.style.transform='translate('+(e.clientX-r.left)+'px,'+(e.clientY-r.top)+'px)';ov.style.setProperty('--ry',((e.clientX-o.left-o.width/2)/o.width*14)+'deg');ov.style.setProperty('--rx',(-(e.clientY-o.top-o.height/2)/o.height*10)+'deg')});
  h.addEventListener('mouseleave',()=>{ov.style.setProperty('--ry','0deg');ov.style.setProperty('--rx','0deg')});
  $$('.ct').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform='perspective(800px) rotateY('+(x*10)+'deg) rotateX('+(-y*10)+'deg) translateY(-8px)'});c.addEventListener('mouseleave',()=>{c.style.transform=''})})}
